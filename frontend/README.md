@@ -1,6 +1,6 @@
 # Udacitrivia Frontend
 
-![alt text](src/udacitrivia.png)
+![alt text](./src/udacitrivia.png)
 
 ## Getting Started
 
