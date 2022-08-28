@@ -1,5 +1,7 @@
 # Udacitrivia Frontend
 
+![alt text](src/udacitrivia.png)
+
 ## Getting Started
 
 ### Pre-requisites and Local Development

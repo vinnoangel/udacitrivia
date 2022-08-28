@@ -116,9 +116,18 @@ Next, we have to setup the environment variables to be able to run flask app suc
 
 On Windows
 
+- command line
+
 ```bash
-set FLASK_APP=app.py
+set FLASK_APP=flaskr
 set FLASk_ENV=development
+```
+
+- powershell
+
+```bash
+$env:FLASK_APP = "flaskr"
+$env:FLASk_ENV = "development"
 ```
 
 On Mac
