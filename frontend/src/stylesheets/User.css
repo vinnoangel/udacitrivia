@@ -1,0 +1,85 @@
+.user-view {
+  display: flex;
+  flex-direction: row;
+}
+
+.users-list {
+  flex-basis: 25%;
+  flex-shrink: 2;
+}
+
+.users-list > form {
+  width: 60%;
+}
+
+.users-list > ul > li{
+  cursor: pointer;
+}
+
+.table-list {
+  flex-basis: 75%;
+  text-align: center;
+}
+
+.Question-holder {
+  padding: 10px 20px;
+  border: 2px black solid;
+  text-align: left;
+  margin: 7px;
+}
+
+.Question-status {
+  display: flex;
+  flex-direction: row;
+  height: 30px;
+  width: 200px;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.Question {
+  font-size: 21px;
+  width: 100%;
+}
+
+span.page-num {
+  margin: 5px;
+  padding-bottom: 50px;
+  /* color: blue; */
+  font-weight: bolder;
+  text-decoration: underline;
+  font-size: 16px;
+  cursor: pointer;
+}
+
+span.page-num.active {
+  color: blue;
+}
+
+img.delete {
+  width: 20px;
+  cursor: pointer;
+}
+
+  #users {
+    font-family: Arial, Helvetica, sans-serif;
+    border-collapse: collapse;
+    width: 99%;
+  }
+  
+  #users td, #users th {
+    border: 1px solid #ddd;
+    padding: 8px;
+  }
+  
+  #users tr:nth-child(even){background-color: #f2f2f2;}
+  
+  #users tr:hover {background-color: #ddd;}
+  
+  #users th {
+    padding-top: 12px;
+    padding-bottom: 12px;
+    text-align: left;
+    background-color: dodgerblue;
+    color: white;
+  }
