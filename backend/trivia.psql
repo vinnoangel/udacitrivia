@@ -2,8 +2,8 @@
 -- PostgreSQL database dump
 --
 
--- Dumped from database version 11.3
--- Dumped by pg_dump version 11.3
+-- Dumped from database version 14.4
+-- Dumped by pg_dump version 14.4
 
 SET statement_timeout = 0;
 SET lock_timeout = 0;
@@ -18,7 +18,7 @@ SET row_security = off;
 
 SET default_tablespace = '';
 
-SET default_with_oids = false;
+SET default_table_access_method = heap;
 
 --
 -- Name: categories; Type: TABLE; Schema: public; Owner: student
@@ -63,7 +63,9 @@ CREATE TABLE public.questions (
     question text,
     answer text,
     difficulty integer,
-    category integer
+    category integer,
+    rating integer,
+    created_at timestamp without time zone NOT NULL
 );
 
 
@@ -92,6 +94,80 @@ ALTER SEQUENCE public.questions_id_seq OWNED BY public.questions.id;
 
 
 --
+-- Name: scores; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE public.scores (
+    id integer NOT NULL,
+    user_id integer,
+    your_score integer,
+    expected_score integer,
+    created_at timestamp without time zone NOT NULL
+);
+
+
+ALTER TABLE public.scores OWNER TO postgres;
+
+--
+-- Name: scores_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE public.scores_id_seq
+    AS integer
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.scores_id_seq OWNER TO postgres;
+
+--
+-- Name: scores_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
+--
+
+ALTER SEQUENCE public.scores_id_seq OWNED BY public.scores.id;
+
+
+--
+-- Name: users; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE public.users (
+    id integer NOT NULL,
+    username text NOT NULL,
+    fullname text NOT NULL,
+    gender character(6),
+    created_at timestamp without time zone DEFAULT now() NOT NULL
+);
+
+
+ALTER TABLE public.users OWNER TO postgres;
+
+--
+-- Name: users_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE public.users_id_seq
+    AS integer
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.users_id_seq OWNER TO postgres;
+
+--
+-- Name: users_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
+--
+
+ALTER SEQUENCE public.users_id_seq OWNED BY public.users.id;
+
+
+--
 -- Name: categories id; Type: DEFAULT; Schema: public; Owner: student
 --
 
@@ -106,6 +182,20 @@ ALTER TABLE ONLY public.questions ALTER COLUMN id SET DEFAULT nextval('public.qu
 
 
 --
+-- Name: scores id; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.scores ALTER COLUMN id SET DEFAULT nextval('public.scores_id_seq'::regclass);
+
+
+--
+-- Name: users id; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.users ALTER COLUMN id SET DEFAULT nextval('public.users_id_seq'::regclass);
+
+
+--
 -- Data for Name: categories; Type: TABLE DATA; Schema: public; Owner: student
 --
 
@@ -116,6 +206,7 @@ COPY public.categories (id, type) FROM stdin;
 4	History
 5	Entertainment
 6	Sports
+7	vin
 \.
 
 
@@ -123,26 +214,59 @@ COPY public.categories (id, type) FROM stdin;
 -- Data for Name: questions; Type: TABLE DATA; Schema: public; Owner: student
 --
 
-COPY public.questions (id, question, answer, difficulty, category) FROM stdin;
-5	Whose autobiography is entitled 'I Know Why the Caged Bird Sings'?	Maya Angelou	2	4
-9	What boxer's original name is Cassius Clay?	Muhammad Ali	1	4
-2	What movie earned Tom Hanks his third straight Oscar nomination, in 1996?	Apollo 13	4	5
-4	What actor did author Anne Rice first denounce, then praise in the role of her beloved Lestat?	Tom Cruise	4	5
-6	What was the title of the 1990 fantasy directed by Tim Burton about a young man with multi-bladed appendages?	Edward Scissorhands	3	5
-10	Which is the only team to play in every soccer World Cup tournament?	Brazil	3	6
-11	Which country won the first ever soccer World Cup in 1930?	Uruguay	4	6
-12	Who invented Peanut Butter?	George Washington Carver	2	4
-13	What is the largest lake in Africa?	Lake Victoria	2	3
-14	In which royal palace would you find the Hall of Mirrors?	The Palace of Versailles	3	3
-15	The Taj Mahal is located in which Indian city?	Agra	2	3
-16	Which Dutch graphic artist–initials M C was a creator of optical illusions?	Escher	1	2
-17	La Giaconda is better known as what?	Mona Lisa	3	2
-18	How many paintings did Van Gogh sell in his lifetime?	One	4	2
-19	Which American artist was a pioneer of Abstract Expressionism, and a leading exponent of action painting?	Jackson Pollock	2	2
-20	What is the heaviest organ in the human body?	The Liver	4	1
-21	Who discovered penicillin?	Alexander Fleming	3	1
-22	Hematology is a branch of medicine involving the study of what?	Blood	4	1
-23	Which dung beetle was worshipped by the ancient Egyptians?	Scarab	4	4
+COPY public.questions (id, question, answer, difficulty, category, rating, created_at) FROM stdin;
+2	What movie earned Tom Hanks his third straight Oscar nomination, in 1996?	Apollo 13	4	5	1	2022-08-25 19:53:31.016979
+4	What actor did author Anne Rice first denounce, then praise in the role of her beloved Lestat?	Tom Cruise	4	5	1	2022-08-25 19:53:31.016979
+6	What was the title of the 1990 fantasy directed by Tim Burton about a young man with multi-bladed appendages?	Edward Scissorhands	3	5	1	2022-08-25 19:53:31.016979
+10	Which is the only team to play in every soccer World Cup tournament?	Brazil	3	6	1	2022-08-25 19:53:31.016979
+11	Which country won the first ever soccer World Cup in 1930?	Uruguay	4	6	1	2022-08-25 19:53:31.016979
+12	Who invented Peanut Butter?	George Washington Carver	2	4	1	2022-08-25 19:53:31.016979
+13	What is the largest lake in Africa?	Lake Victoria	2	3	1	2022-08-25 19:53:31.016979
+14	In which royal palace would you find the Hall of Mirrors?	The Palace of Versailles	3	3	1	2022-08-25 19:53:31.016979
+15	The Taj Mahal is located in which Indian city?	Agra	2	3	1	2022-08-25 19:53:31.016979
+16	Which Dutch graphic artist–initials M C was a creator of optical illusions?	Escher	1	2	1	2022-08-25 19:53:31.016979
+17	La Giaconda is better known as what?	Mona Lisa	3	2	1	2022-08-25 19:53:31.016979
+18	How many paintings did Van Gogh sell in his lifetime?	One	4	2	1	2022-08-25 19:53:31.016979
+19	Which American artist was a pioneer of Abstract Expressionism, and a leading exponent of action painting?	Jackson Pollock	2	2	1	2022-08-25 19:53:31.016979
+20	What is the heaviest organ in the human body?	The Liver	4	1	1	2022-08-25 19:53:31.016979
+21	Who discovered penicillin?	Alexander Fleming	3	1	1	2022-08-25 19:53:31.016979
+22	Hematology is a branch of medicine involving the study of what?	Blood	4	1	1	2022-08-25 19:53:31.016979
+23	Which dung beetle was worshipped by the ancient Egyptians?	Scarab	4	4	1	2022-08-25 19:53:31.016979
+24	This is question	This is anwer	4	2	1	2022-08-25 19:53:31.016979
+25	This is another question	This is another anwer	3	1	1	2022-08-25 19:53:31.016979
+5	Whose autobiography is entitled 'I Know Why the Caged Bird Sings'?	Maya Angelou	2	4	4	2022-08-25 19:53:31.016979
+9	What boxer's original name is Cassius Clay?	Muhammad Ali	1	4	3	2022-08-25 19:53:31.016979
+34	Chelsea football is a Club. In which city is Chelsea located	London	2	6	4	2022-08-27 11:07:58.173982
+35	ojjk	kjj	3	1	4	2022-08-27 18:59:50.218035
+\.
+
+
+--
+-- Data for Name: scores; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY public.scores (id, user_id, your_score, expected_score, created_at) FROM stdin;
+1	1	1	1	2022-08-27 08:48:33.505867
+2	1	1	2	2022-08-27 08:48:48.083485
+3	1	2	2	2022-08-27 08:55:42.385202
+4	1	2	2	2022-08-27 08:55:42.4072
+5	1	2	2	2022-08-27 08:58:30.720885
+6	1	2	2	2022-08-27 08:58:30.724884
+7	1	2	2	2022-08-27 10:17:17.523027
+8	2	2	4	2022-08-27 10:18:13.436744
+9	2	2	2	2022-08-27 10:30:34.500803
+10	1	2	2	2022-08-27 10:32:19.903048
+\.
+
+
+--
+-- Data for Name: users; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY public.users (id, username, fullname, gender, created_at) FROM stdin;
+8	kkk	jj	Male  	2022-08-27 10:54:40.071603
+9	vinnoangel	Vincent Ohiri	Male  	2022-08-27 10:55:12.731257
+10	terry	John Terry	Male  	2022-08-27 10:55:30.493346
 \.
 
 
@@ -150,14 +274,28 @@ COPY public.questions (id, question, answer, difficulty, category) FROM stdin;
 -- Name: categories_id_seq; Type: SEQUENCE SET; Schema: public; Owner: student
 --
 
-SELECT pg_catalog.setval('public.categories_id_seq', 6, true);
+SELECT pg_catalog.setval('public.categories_id_seq', 7, true);
 
 
 --
 -- Name: questions_id_seq; Type: SEQUENCE SET; Schema: public; Owner: student
 --
 
-SELECT pg_catalog.setval('public.questions_id_seq', 23, true);
+SELECT pg_catalog.setval('public.questions_id_seq', 35, true);
+
+
+--
+-- Name: scores_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('public.scores_id_seq', 10, true);
+
+
+--
+-- Name: users_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('public.users_id_seq', 10, true);
 
 
 --
@@ -174,6 +312,22 @@ ALTER TABLE ONLY public.categories
 
 ALTER TABLE ONLY public.questions
     ADD CONSTRAINT questions_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: scores scores_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.scores
+    ADD CONSTRAINT scores_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: users users_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.users
+    ADD CONSTRAINT users_pkey PRIMARY KEY (id);
 
 
 --

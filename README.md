@@ -3,7 +3,9 @@
 Udacitrivia is a gaming application. It allow users to manage questions and play game. This application is splitted into tow (2) categories.
 
 1. Backend - The backend is built with Python technology using the Flask Python framework with Postgresql as the database.
+   > View the [Backend README](./backend/README.md) for more details design specifically for the backend.
 2. Frontend - The frontend is built with ReactJS.
+   > View the [Frontend README](./frontend/README.md) for more details design specifically for the frontend.
 
 All backend code follows [PEP8 Style Guidelines](https://www.python.org/dev/peps/pep-0008/).
 
@@ -662,4 +664,4 @@ Currently, this project isn't hosted yet
 
 Vincent Uche Ohiri
 
-My Coach, Ms Caryn at Udacity, Michael my Session Team Lead and many others that time won't permit me mention
+My Coach, Ms Caryn at Udacity, Michael my Session Team Lead and many others that time won't permit me to mention
