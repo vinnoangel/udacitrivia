@@ -154,13 +154,22 @@ class QuizView extends Component {
   };
 
   renderPrePlay() {
+    let id = Object.keys(this.state.categories)[0];
+    let type = Object.values(this.state.categories)[0];
+
     return (
       <div className="quiz-play-holder">
         <div className="choose-header">Choose Category</div>
         <div className="category-holder">
-          <div className="play-category" onClick={this.selectCategory}>
+          <div
+            key={id}
+            value={id}
+            className="play-category"
+            onClick={() => this.selectCategory({ type: type, id })}
+          >
             ALL
           </div>
+
           {Object.keys(this.state.categories).map((id) => {
             return (
               <div

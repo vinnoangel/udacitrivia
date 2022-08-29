@@ -324,7 +324,7 @@ def create_app(test_config=None):
             if quiz_category is None and len(previous_questions) > 0:
                 abort(422)
 
-            if quiz_category is None:
+            if quiz_category == 0:
                 # fetch a default category since it's empty
                 quiz_category = Category.query.first().id
 
