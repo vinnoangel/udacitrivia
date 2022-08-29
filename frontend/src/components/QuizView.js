@@ -1,5 +1,4 @@
 import React, { Component } from "react";
-import { Redirect } from "react-router-dom";
 import $ from "jquery";
 import "../stylesheets/QuizView.css";
 
@@ -116,7 +115,7 @@ class QuizView extends Component {
       },
       crossDomain: true,
       success: (result) => {
-        alert(result.message);
+        if (result.message) alert(result.message);
         return;
       },
       error: (error) => {
